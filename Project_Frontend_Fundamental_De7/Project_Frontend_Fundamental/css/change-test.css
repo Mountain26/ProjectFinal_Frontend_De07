@@ -1,0 +1,191 @@
+body{
+    color: rgb(12, 11, 11);
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    margin: 0;
+}
+.container-custom{
+    width: 100% ;
+    background: #fff ;
+    color: black ;
+    border-radius: 10px ;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2) ;
+}
+.navbar-custom{
+    height: 80px;
+    background: #222;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 40px;
+}
+ul,ol{
+    margin: 0;
+}
+.nav-links-custom{
+    position: relative;
+    top: 8px;
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+.frame-table{
+    margin-top: 15px;
+    width: 1257px;
+}
+h1{
+    font-weight: bold;
+    font-size: 28px;
+}
+.nav-links-custom a{
+    color: white;
+    text-decoration: none;
+}
+.nav-links-custom li :hover{
+    opacity: 50%;
+}
+.content{  
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center ;
+    color: black;
+}
+.btn-add{
+    background: #0D6EFD;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    display: block;  
+    text-align: left;
+}
+h2{
+    display: block; 
+    text-align: left;
+    margin-bottom:20px;
+    font-weight: bold ;
+}
+.disabled-li{
+    font-weight: bold;
+    pointer-events: none;
+    cursor: not-allowed;
+}
+.category-table td{
+    line-height: 50px !important;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+footer{
+    height: 60px;
+    width: 100%;
+    text-align: center;
+    line-height: 60px;
+    background: #222;
+    color: white;
+}
+
+
+
+.container {
+    width: 80%;
+    margin: auto;
+    padding: 20px;
+}
+.header {
+    background-color: #343a40;
+    color: white;
+    padding: 10px;
+    text-align: center;
+}
+.section {
+    margin-top: -15px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
+}
+.section h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+.section2{
+    display: flex;
+    justify-content: space-between;
+}
+.section2 button{
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-align: center;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.section2 button:hover{
+    background-color: #0056b3;
+    color: white;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+.frame{
+    display: flex;
+    gap: 50px;
+}
+.form-group input, .form-group select{
+    padding-left: 10px;
+    width: 180px;
+    height: 40px;
+    line-height: 40px;
+    box-sizing: border-box;
+    border: 1px solid lightgray;
+    border-radius: 5px;
+}
+.test-name{
+    width: 100% !important;
+}
+table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, th, td {
+    border: 1px solid #dee2e6;
+}
+.category-table tbody tr:nth-child(odd){
+    background-color: #f9f9f9 !important;
+}
+.category-table tbody tr:nth-child(even){
+    background-color: #ffffff !important;
+}
+th, td{
+    padding: 10px;
+    text-align: left;
+}
+th{
+    background-color: #343a40 !important;
+    color: white !important;
+}
+.action-btn{
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+.edit-btn{
+    background-color: #ffc107;
+    color: white;
+}
+.delete-btn{
+    background-color: #dc3545;
+    color: white;
+}

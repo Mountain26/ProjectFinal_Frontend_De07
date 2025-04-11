@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quản lí</title>
+  <link rel="stylesheet" href="../css/test-manager.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/reset.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">QuizzForge</div>
+    <ul class="nav-links">
+        <li><a href="../pages/category-manager.html">Danh mục</a></li>
+        <li class="disabled-li"><a href="../pages/test-manager.html">Bài test</a></li>
+        <li><a href="../pages/login.html">Đăng xuất</a></li>
+    </ul>
+  </nav>  
+<main class="content">
+    <header class="header-content">
+        <h1>Quản lý bài test</h1>
+        <a href="../pages/add-test.html"><button class="add-test-btn">Thêm bài test</button></a>
+    </header>
+    <div class="filter-bar">
+      <select id="sortBy" style="z-index: 1;">
+          <option value="name-asc">Sắp xếp theo tên (A - Z)</option>
+          <option value="name-desc">Sắp xếp theo tên (Z - A)</option>
+          <option value="time-asc">Sắp xếp theo thời gian (Tăng dần)</option>
+          <option value="time-desc">Sắp xếp theo thời gian (Giảm dần)</option>
+      </select>
+      <input type="text" id="searchInput" placeholder="Tìm kiếm theo tên..." style="z-index: 1;">
+    </div>
+    <section>
+        <table class="category-table">
+            <thead>
+                <tr>
+                    <th data-sort="id">ID</th>
+                    <th data-sort="name" class="text-start">Tên bài test</th>
+                    <th data-sort="category" class="text-start">Danh mục</th>
+                    <th data-sort="questions" class="text-start">Số câu hỏi</th>
+                    <th data-sort="time" class="text-start">Thời gian</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+        </table>
+        <div class="pagination">
+          <a href="#" class="page-prev">&lt;</a>
+          <div class="page-numbers"></div>
+          <a href="#" class="page-next">&gt;</a>
+        </div>
+    </section>
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Xác nhận xóa</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <p>Bạn chắc chắn muốn xóa bài test này?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Huỷ</button>
+              <button type="button" class="btn btn-danger" id="confirmDelete">Xóa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+  </main>
+  <footer>
+      <p>© 2025 QuizzForge. All rights reserved.</p>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/test-manager.js"></script>
+</body>
+</html>

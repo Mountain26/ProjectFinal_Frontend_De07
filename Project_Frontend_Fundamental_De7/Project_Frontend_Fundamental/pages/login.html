@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập</title>
+  <link rel="stylesheet" href="../css/login.css">
+  <link rel="stylesheet" href="../css/reset.css">
+</head>
+<body>
+  <div class="outside-content">
+    <h1>Đăng nhập</h1>
+    <p>QuizForge – Nền tảng sáng tạo bài kiểm tra trực tuyến, <br>
+      giúp bạn dễ dàng thiết kế, chia sẻ và thực hiện các bài <br>
+      kiểm tra một cách nhanh chóng và hiệu quả!</p>
+  </div>
+  <div class="container">
+    <form>
+      <label for="email">Email (admin@gmail.com):</label>
+      <input type="text" id="email" placeholder="Nhập email của bạn">
+      <div id="emailError" class="error-message"></div>
+      <label for="password">Password (admin123):</label>
+      <input type="password" id="password" placeholder="Nhập mật khẩu của bạn">
+      <div id="passwordError" class="error-message"></div>
+      <button type="submit">Đăng nhập</button>
+    </form>
+    <div class="login-link">
+      <p>Chưa có tài khoản? <a href="../pages/register.html">Đăng ký</a></p>
+    </div>
+  </div>
+  <script src="../js/login.js"></script>
+</body>
+</html>
