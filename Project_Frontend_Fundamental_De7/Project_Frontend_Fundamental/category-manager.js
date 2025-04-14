@@ -1,0 +1,1195 @@
+let tests = [];
+let categoryTableBody = document.querySelector(".category-table tbody");
+let addCategoryForm = document.getElementById("addCategoryForm");
+let editCategoryForm = document.getElementById("editCategoryForm");
+let deleteConfirmButton = document.querySelector(".confirm-delete");
+let currentCategoryId = null;
+let currentPage = 1;
+let itemsPerPage = 5;
+function saveToLocalStorage(){
+    localStorage.setItem("tests", JSON.stringify(tests));
+}
+function loadFromLocalStorage(){
+    let savedTests = localStorage.getItem("tests");
+    if(savedTests){
+        tests = JSON.parse(savedTests);
+    } else {
+        tests = [
+            {
+                id: 1,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Lịch sử",
+                categoryId: "Lịch sử",
+                emoji: "📚",
+                playTime: 10,
+                playAmount: 15,
+                questions: [
+                    {
+                        content: "Ai được biết đến như là người cha của lịch sử?",
+                        answers: [
+                            { answer: "Herodotus", isCorrected: true },
+                            { answer: "Socrates" },
+                            { answer: "Plato" },
+                            { answer: "Aristotle" }
+                        ]
+                    },
+                    {
+                        content: "Chiến tranh thế giới thứ hai kết thúc vào năm nào?",
+                        answers: [
+                            { answer: "1940" },
+                            { answer: "1945", isCorrected: true },
+                            { answer: "1950" },
+                            { answer: "1939" }
+                        ]
+                    },
+                    {
+                        content: "Ai là vị tướng nổi tiếng trong Chiến tranh Việt Nam?",
+                        answers: [
+                            { answer: "Nguyễn Ái Quốc" },
+                            { answer: "Võ Nguyên Giáp", isCorrected: true },
+                            { answer: "Lê Duẩn" },
+                            { answer: "Trường Chinh" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người phát hiện ra châu Mỹ vào năm 1492?",
+                        answers: [
+                            { answer: "Ferdinand Magellan" },
+                            { answer: "Christopher Columbus", isCorrected: true },
+                            { answer: "Vasco da Gama" },
+                            { answer: "Marco Polo" }
+                        ]
+                    },
+                    {
+                        content: "Triều đại phong kiến lâu đời nhất ở Việt Nam là gì?",
+                        answers: [
+                            { answer: "Nhà Nguyễn" },
+                            { answer: "Nhà Trần" },
+                            { answer: "Nhà Lê" },
+                            { answer: "Nhà Hồng Bàng", isCorrected: true }
+                        ]
+                    },
+                    {
+                        content: "Ai là vị vua sáng lập ra triều đại nhà Nguyễn?",
+                        answers: [
+                            { answer: "Vua Gia Long", isCorrected: true },
+                            { answer: "Vua Minh Mạng" },
+                            { answer: "Vua Quang Trung" },
+                            { answer: "Vua Tự Đức" }
+                        ]
+                    },
+                    {
+                        content: "Cuộc cách mạng nào diễn ra ở Pháp năm 1789?",
+                        answers: [
+                            { answer: "Cách mạng công nghiệp" },
+                            { answer: "Cách mạng tư sản", isCorrected: true },
+                            { answer: "Cách mạng văn hóa" },
+                            { answer: "Cách mạng xanh" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người khởi xướng cuộc chiến tranh nhân dân ở Việt Nam?",
+                        answers: [
+                            { answer: "Hồ Chí Minh", isCorrected: true },
+                            { answer: "Võ Nguyên Giáp" },
+                            { answer: "Lê Đức Thọ" },
+                            { answer: "Phạm Văn Đồng" }
+                        ]
+                    },
+                    {
+                        content: "Chiến tranh Lạnh giữa hai siêu cường thế giới kéo dài bao lâu?",
+                        answers: [
+                            { answer: "40 năm" },
+                            { answer: "45 năm", isCorrected: true },
+                            { answer: "30 năm" },
+                            { answer: "50 năm" }
+                        ]
+                    },
+                    {
+                        content: "Tuyên ngôn độc lập của Hoa Kỳ được ký vào năm nào?",
+                        answers: [
+                            { answer: "1776", isCorrected: true },
+                            { answer: "1789" },
+                            { answer: "1800" },
+                            { answer: "1812" }
+                        ]
+                    },
+                    {
+                        content: "Trận chiến nào đã kết thúc chiến tranh thế giới thứ nhất?",
+                        answers: [
+                            { answer: "Trận Berlin" },
+                            { answer: "Trận Waterloo" },
+                            { answer: "Hiệp định Versailles", isCorrected: true },
+                            { answer: "Trận Normandy" }
+                        ]
+                    },
+                    {
+                        content: "Ai là hoàng đế nổi tiếng của La Mã cổ đại?",
+                        answers: [
+                            { answer: "Alexander Đại Đế" },
+                            { answer: "Julius Caesar", isCorrected: true },
+                            { answer: "Constantine" },
+                            { answer: "Nero" }
+                        ]
+                    },
+                    {
+                        content: "Chiến tranh Trăm Năm giữa Anh và Pháp kéo dài bao lâu?",
+                        answers: [
+                            { answer: "100 năm", isCorrected: true },
+                            { answer: "80 năm" },
+                            { answer: "120 năm" },
+                            { answer: "90 năm" }
+                        ]
+                    },
+                    {
+                        content: "Thành phố cổ nào bị chôn vùi dưới tro núi lửa vào năm 79 SCN?",
+                        answers: [
+                            { answer: "Rome" },
+                            { answer: "Pompeii", isCorrected: true },
+                            { answer: "Athens" },
+                            { answer: "Babylon" }
+                        ]
+                    },
+                    {
+                        content: "Hiến chương Liên Hợp Quốc được ký vào năm nào?",
+                        answers: [
+                            { answer: "1941" },
+                            { answer: "1945", isCorrected: true },
+                            { answer: "1950" },
+                            { answer: "1960" }
+                        ]
+                    }            
+                ]
+            },
+            {
+                id: 2,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Khoa học",
+                categoryId: "Khoa học",
+                emoji: "🧠",
+                playTime: 15,
+                playAmount: 20,
+                questions: [
+                    {
+                        content: "Nước có tên gọi khoa học là gì?",
+                        answers: [
+                            { answer: "H2O", isCorrected: true },
+                            { answer: "O2" },
+                            { answer: "H2" },
+                            { answer: "HO" }
+                        ]
+                    },
+                    {
+                        content: "Hành tinh nào được gọi là 'Hành tinh Đỏ'?",
+                        answers: [
+                            { answer: "Trái Đất" },
+                            { answer: "Sao Hỏa", isCorrected: true },
+                            { answer: "Sao Kim" },
+                            { answer: "Sao Thổ" }
+                        ]
+                    },
+                    {
+                        content: "Ánh sáng di chuyển nhanh nhất qua môi trường nào?",
+                        answers: [
+                            { answer: "Chất rắn" },
+                            { answer: "Chất lỏng" },
+                            { answer: "Chân không", isCorrected: true },
+                            { answer: "Khí quyển" }
+                        ]
+                    },
+                    {
+                        content: "Nguyên tố nào là cơ bản trong sự sống của con người?",
+                        answers: [
+                            { answer: "Carbon (C)", isCorrected: true },
+                            { answer: "Hydrogen (H)" },
+                            { answer: "Oxygen (O)" },
+                            { answer: "Nitrogen (N)" }
+                        ]
+                    },
+                    {
+                        content: "Đơn vị đo cường độ dòng điện là gì?",
+                        answers: [
+                            { answer: "Volt" },
+                            { answer: "Ohm" },
+                            { answer: "Watt" },
+                            { answer: "Ampe", isCorrected: true }
+                        ]
+                    },
+                    {
+                        content: "Cơ thể con người chứa bao nhiêu phần trăm nước?",
+                        answers: [
+                            { answer: "50%" },
+                            { answer: "60%", isCorrected: true },
+                            { answer: "70%" },
+                            { answer: "80%" }
+                        ]
+                    },
+                    {
+                        content: "Thành phần chính của mặt trời là gì?",
+                        answers: [
+                            { answer: "Helium và Hydrogen", isCorrected: true },
+                            { answer: "Carbon và Nitrogen" },
+                            { answer: "Oxygen và Helium" },
+                            { answer: "Hydrogen và Nitrogen" }
+                        ]
+                    },
+                    {
+                        content: "Loài động vật nào có thể tái tạo lại các phần cơ thể bị mất?",
+                        answers: [
+                            { answer: "Ếch" },
+                            { answer: "Kỳ nhông", isCorrected: true },
+                            { answer: "Chuột" },
+                            { answer: "Rắn" }
+                        ]
+                    },
+                    {
+                        content: "Lớp khí quyển nào chứa tầng ozone?",
+                        answers: [
+                            { answer: "Tầng đối lưu" },
+                            { answer: "Tầng bình lưu", isCorrected: true },
+                            { answer: "Tầng trung lưu" },
+                            { answer: "Tầng ngoài khí quyển" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người phát hiện ra lực hấp dẫn?",
+                        answers: [
+                            { answer: "Albert Einstein" },
+                            { answer: "Isaac Newton", isCorrected: true },
+                            { answer: "Galileo Galilei" },
+                            { answer: "Niels Bohr" }
+                        ]
+                    }        
+                ]
+            },
+            {
+                id: 3,
+                image: "../assets/images/Image.png",
+                image: "../assets/images/Image.png",
+                testName: "Quiz về đời sống",
+                categoryId: "Đời sống",
+                emoji: "🏠",
+                playTime: 20,
+                playAmount: 40,
+                questions: [
+                    {
+                        content: "Kết quả của phép toán 2 + 2 là bao nhiêu?",
+                        answers: [
+                            { answer: "3" },
+                            { answer: "4", isCorrected: true },
+                            { answer: "5" },
+                            { answer: "6" }
+                        ]
+                    },
+                    {
+                        content: "Số Pi (π) có giá trị xấp xỉ là bao nhiêu?",
+                        answers: [
+                            { answer: "3.14159", isCorrected: true },
+                            { answer: "3.14" },
+                            { answer: "3.0" },
+                            { answer: "4.0" }
+                        ]
+                    },
+                    {
+                        content: "Phương trình x² - 4 = 0 có nghiệm là gì?",
+                        answers: [
+                            { answer: "x = 2; x = -2", isCorrected: true },
+                            { answer: "x = 4; x = -4" },
+                            { answer: "x = 0; x = 4" },
+                            { answer: "x = 1; x = -1" }
+                        ]
+                    },
+                    {
+                        content: "Góc nhọn có giá trị bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "Dưới 90 độ", isCorrected: true },
+                            { answer: "Trên 90 độ" },
+                            { answer: "Bằng 180 độ" }
+                        ]
+                    },
+                    {
+                        content: "Định lý Pythagoras áp dụng cho tam giác nào?",
+                        answers: [
+                            { answer: "Tam giác đều" },
+                            { answer: "Tam giác vuông", isCorrected: true },
+                            { answer: "Tam giác cân" },
+                            { answer: "Tam giác tù" }
+                        ]
+                    },
+                    {
+                        content: "Tổng của các góc trong một tam giác là bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "180 độ", isCorrected: true },
+                            { answer: "360 độ" },
+                            { answer: "270 độ" }
+                        ]
+                    },
+                    {
+                        content: "Số nào là số nguyên tố đầu tiên?",
+                        answers: [
+                            { answer: "0" },
+                            { answer: "1" },
+                            { answer: "2", isCorrected: true },
+                            { answer: "3" }
+                        ]
+                    },
+                    {
+                        content: "Công thức tính diện tích hình tròn là gì?",
+                        answers: [
+                            { answer: "π × bán kính", isCorrected: true },
+                            { answer: "π × bán kính × chu vi" },
+                            { answer: "π × chu vi" },
+                            { answer: "π × đường kính" }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 4,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Poker",
+                categoryId: "Poker",
+                emoji: "🍾",
+                playTime: 12,
+                playAmount: 13,
+                questions: [
+                    {
+                        content: "Ai được biết đến như là người cha của lịch sử?",
+                        answers: [
+                            { answer: "Herodotus", isCorrected: true },
+                            { answer: "Socrates" },
+                            { answer: "Plato" },
+                            { answer: "Aristotle" }
+                        ]
+                    },
+                    {
+                        content: "Chiến tranh thế giới thứ hai kết thúc vào năm nào?",
+                        answers: [
+                            { answer: "1940" },
+                            { answer: "1945", isCorrected: true },
+                            { answer: "1950" },
+                            { answer: "1939" }
+                        ]
+                    },
+                    {
+                        content: "Ai là vị tướng nổi tiếng trong Chiến tranh Việt Nam?",
+                        answers: [
+                            { answer: "Nguyễn Ái Quốc" },
+                            { answer: "Võ Nguyên Giáp", isCorrected: true },
+                            { answer: "Lê Duẩn" },
+                            { answer: "Trường Chinh" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người phát hiện ra châu Mỹ vào năm 1492?",
+                        answers: [
+                            { answer: "Ferdinand Magellan" },
+                            { answer: "Christopher Columbus", isCorrected: true },
+                            { answer: "Vasco da Gama" },
+                            { answer: "Marco Polo" }
+                        ]
+                    },
+                    {
+                        content: "Triều đại phong kiến lâu đời nhất ở Việt Nam là gì?",
+                        answers: [
+                            { answer: "Nhà Nguyễn" },
+                            { answer: "Nhà Trần" },
+                            { answer: "Nhà Lê" },
+                            { answer: "Nhà Hồng Bàng", isCorrected: true }
+                        ]
+                    },
+                    {
+                        content: "Ai là vị vua sáng lập ra triều đại nhà Nguyễn?",
+                        answers: [
+                            { answer: "Vua Gia Long", isCorrected: true },
+                            { answer: "Vua Minh Mạng" },
+                            { answer: "Vua Quang Trung" },
+                            { answer: "Vua Tự Đức" }
+                        ]
+                    },
+                    {
+                        content: "Cuộc cách mạng nào diễn ra ở Pháp năm 1789?",
+                        answers: [
+                            { answer: "Cách mạng công nghiệp" },
+                            { answer: "Cách mạng tư sản", isCorrected: true },
+                            { answer: "Cách mạng văn hóa" },
+                            { answer: "Cách mạng xanh" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người khởi xướng cuộc chiến tranh nhân dân ở Việt Nam?",
+                        answers: [
+                            { answer: "Hồ Chí Minh", isCorrected: true },
+                            { answer: "Võ Nguyên Giáp" },
+                            { answer: "Lê Đức Thọ" },
+                            { answer: "Phạm Văn Đồng" }
+                        ]
+                    },
+                    {
+                        content: "Chiến tranh Lạnh giữa hai siêu cường thế giới kéo dài bao lâu?",
+                        answers: [
+                            { answer: "40 năm" },
+                            { answer: "45 năm", isCorrected: true },
+                            { answer: "30 năm" },
+                            { answer: "50 năm" }
+                        ]
+                    },
+                    {
+                        content: "Tuyên ngôn độc lập của Hoa Kỳ được ký vào năm nào?",
+                        answers: [
+                            { answer: "1776", isCorrected: true },
+                            { answer: "1789" },
+                            { answer: "1800" },
+                            { answer: "1812" }
+                        ]
+                    },
+                    {
+                        content: "Trận chiến nào đã kết thúc chiến tranh thế giới thứ nhất?",
+                        answers: [
+                            { answer: "Trận Berlin" },
+                            { answer: "Trận Waterloo" },
+                            { answer: "Hiệp định Versailles", isCorrected: true },
+                            { answer: "Trận Normandy" }
+                        ]
+                    },
+                    {
+                        content: "Trận chiến nào đã kết thúc chiến tranh thế giới thứ nhất?",
+                        answers: [
+                            { answer: "Trận Berlin" },
+                            { answer: "Trận Waterloo" },
+                            { answer: "Hiệp định Versailles", isCorrected: true },
+                            { answer: "Trận Normandy" }
+                        ]
+                    },
+                    {
+                        content: "Trận chiến nào đã kết thúc chiến tranh thế giới thứ nhất?",
+                        answers: [
+                            { answer: "Trận Berlin" },
+                            { answer: "Trận Waterloo" },
+                            { answer: "Hiệp định Versailles", isCorrected: true },
+                            { answer: "Trận Normandy" }
+                        ]
+                    },
+                    {
+                        content: "Ai là hoàng đế nổi tiếng của La Mã cổ đại?",
+                        answers: [
+                            { answer: "Alexander Đại Đế" },
+                            { answer: "Julius Caesar", isCorrected: true },
+                            { answer: "Constantine" },
+                            { answer: "Nero" }
+                        ]
+                    },
+                    {
+                        content: "Chiến tranh Trăm Năm giữa Anh và Pháp kéo dài bao lâu?",
+                        answers: [
+                            { answer: "100 năm", isCorrected: true },
+                            { answer: "80 năm" },
+                            { answer: "120 năm" },
+                            { answer: "90 năm" }
+                        ]
+                    },
+                    {
+                        content: "Thành phố cổ nào bị chôn vùi dưới tro núi lửa vào năm 79 SCN?",
+                        answers: [
+                            { answer: "Rome" },
+                            { answer: "Pompeii", isCorrected: true },
+                            { answer: "Athens" },
+                            { answer: "Babylon" }
+                        ]
+                    },
+                    {
+                        content: "Hiến chương Liên Hợp Quốc được ký vào năm nào?",
+                        answers: [
+                            { answer: "1941" },
+                            { answer: "1945", isCorrected: true },
+                            { answer: "1950" },
+                            { answer: "1960" }
+                        ]
+                    }            
+                ]
+            },
+            {
+                id: 5,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Ngữ Văn",
+                categoryId: "Ngữ văn",
+                emoji: "✍️",
+                playTime: 60,
+                playAmount: 23,
+                questions: [
+                    {
+                        content: "Nước có tên gọi khoa học là gì?",
+                        answers: [
+                            { answer: "H2O", isCorrected: true },
+                            { answer: "O2" },
+                            { answer: "H2" },
+                            { answer: "HO" }
+                        ]
+                    },
+                    {
+                        content: "Hành tinh nào được gọi là 'Hành tinh Đỏ'?",
+                        answers: [
+                            { answer: "Trái Đất" },
+                            { answer: "Sao Hỏa", isCorrected: true },
+                            { answer: "Sao Kim" },
+                            { answer: "Sao Thổ" }
+                        ]
+                    },
+                    {
+                        content: "Ánh sáng di chuyển nhanh nhất qua môi trường nào?",
+                        answers: [
+                            { answer: "Chất rắn" },
+                            { answer: "Chất lỏng" },
+                            { answer: "Chân không", isCorrected: true },
+                            { answer: "Khí quyển" }
+                        ]
+                    },
+                    {
+                        content: "Nguyên tố nào là cơ bản trong sự sống của con người?",
+                        answers: [
+                            { answer: "Carbon (C)", isCorrected: true },
+                            { answer: "Hydrogen (H)" },
+                            { answer: "Oxygen (O)" },
+                            { answer: "Nitrogen (N)" }
+                        ]
+                    },
+                    {
+                        content: "Đơn vị đo cường độ dòng điện là gì?",
+                        answers: [
+                            { answer: "Volt" },
+                            { answer: "Ohm" },
+                            { answer: "Watt" },
+                            { answer: "Ampe", isCorrected: true }
+                        ]
+                    },
+                    {
+                        content: "Cơ thể con người chứa bao nhiêu phần trăm nước?",
+                        answers: [
+                            { answer: "50%" },
+                            { answer: "60%", isCorrected: true },
+                            { answer: "70%" },
+                            { answer: "80%" }
+                        ]
+                    },
+                    {
+                        content: "Thành phần chính của mặt trời là gì?",
+                        answers: [
+                            { answer: "Helium và Hydrogen", isCorrected: true },
+                            { answer: "Carbon và Nitrogen" },
+                            { answer: "Oxygen và Helium" },
+                            { answer: "Hydrogen và Nitrogen" }
+                        ]
+                    },
+                    {
+                        content: "Loài động vật nào có thể tái tạo lại các phần cơ thể bị mất?",
+                        answers: [
+                            { answer: "Ếch" },
+                            { answer: "Kỳ nhông", isCorrected: true },
+                            { answer: "Chuột" },
+                            { answer: "Rắn" }
+                        ]
+                    },
+                    {
+                        content: "Lớp khí quyển nào chứa tầng ozone?",
+                        answers: [
+                            { answer: "Tầng đối lưu" },
+                            { answer: "Tầng bình lưu", isCorrected: true },
+                            { answer: "Tầng trung lưu" },
+                            { answer: "Tầng ngoài khí quyển" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người phát hiện ra lực hấp dẫn?",
+                        answers: [
+                            { answer: "Albert Einstein" },
+                            { answer: "Isaac Newton", isCorrected: true },
+                            { answer: "Galileo Galilei" },
+                            { answer: "Niels Bohr" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người phát hiện ra lực hấp dẫn?",
+                        answers: [
+                            { answer: "Albert Einstein" },
+                            { answer: "Isaac Newton", isCorrected: true },
+                            { answer: "Galileo Galilei" },
+                            { answer: "Niels Bohr" }
+                        ]
+                    }      
+                ]
+            },
+            {
+                id: 6,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về đua xe",
+                categoryId: "Đua xe",
+                emoji: "🚴",
+                playTime: 10,
+                playAmount: 40,
+                questions: [
+                    {
+                        content: "Kết quả của phép toán 2 + 2 là bao nhiêu?",
+                        answers: [
+                            { answer: "3" },
+                            { answer: "4", isCorrected: true },
+                            { answer: "5" },
+                            { answer: "6" }
+                        ]
+                    },
+                    {
+                        content: "Số Pi (π) có giá trị xấp xỉ là bao nhiêu?",
+                        answers: [
+                            { answer: "3.14159", isCorrected: true },
+                            { answer: "3.14" },
+                            { answer: "3.0" },
+                            { answer: "4.0" }
+                        ]
+                    },
+                    {
+                        content: "Phương trình x² - 4 = 0 có nghiệm là gì?",
+                        answers: [
+                            { answer: "x = 2; x = -2", isCorrected: true },
+                            { answer: "x = 4; x = -4" },
+                            { answer: "x = 0; x = 4" },
+                            { answer: "x = 1; x = -1" }
+                        ]
+                    },
+                    {
+                        content: "Góc nhọn có giá trị bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "Dưới 90 độ", isCorrected: true },
+                            { answer: "Trên 90 độ" },
+                            { answer: "Bằng 180 độ" }
+                        ]
+                    },
+                    {
+                        content: "Định lý Pythagoras áp dụng cho tam giác nào?",
+                        answers: [
+                            { answer: "Tam giác đều" },
+                            { answer: "Tam giác vuông", isCorrected: true },
+                            { answer: "Tam giác cân" },
+                            { answer: "Tam giác tù" }
+                        ]
+                    },
+                    {
+                        content: "Tổng của các góc trong một tam giác là bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "180 độ", isCorrected: true },
+                            { answer: "360 độ" },
+                            { answer: "270 độ" }
+                        ]
+                    },
+                    {
+                        content: "Số nào là số nguyên tố đầu tiên?",
+                        answers: [
+                            { answer: "0" },
+                            { answer: "1" },
+                            { answer: "2", isCorrected: true },
+                            { answer: "3" }
+                        ]
+                    },
+                    {
+                        content: "Công thức tính diện tích hình tròn là gì?",
+                        answers: [
+                            { answer: "π × bán kính", isCorrected: true },
+                            { answer: "π × bán kính × chu vi" },
+                            { answer: "π × chu vi" },
+                            { answer: "π × đường kính" }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 7,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Hóa học",
+                categoryId: "Hóa học",
+                emoji: "👻",
+                playTime: 25,
+                playAmount: 38,
+                questions: [
+                    {
+                        content: "Kết quả của phép toán 2 + 2 là bao nhiêu?",
+                        answers: [
+                            { answer: "3" },
+                            { answer: "4", isCorrected: true },
+                            { answer: "5" },
+                            { answer: "6" }
+                        ]
+                    },
+                    {
+                        content: "Số Pi (π) có giá trị xấp xỉ là bao nhiêu?",
+                        answers: [
+                            { answer: "3.14159", isCorrected: true },
+                            { answer: "3.14" },
+                            { answer: "3.0" },
+                            { answer: "4.0" }
+                        ]
+                    },
+                    {
+                        content: "Phương trình x² - 4 = 0 có nghiệm là gì?",
+                        answers: [
+                            { answer: "x = 2; x = -2", isCorrected: true },
+                            { answer: "x = 4; x = -4" },
+                            { answer: "x = 0; x = 4" },
+                            { answer: "x = 1; x = -1" }
+                        ]
+                    },
+                    {
+                        content: "Góc nhọn có giá trị bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "Dưới 90 độ", isCorrected: true },
+                            { answer: "Trên 90 độ" },
+                            { answer: "Bằng 180 độ" }
+                        ]
+                    },
+                    {
+                        content: "Định lý Pythagoras áp dụng cho tam giác nào?",
+                        answers: [
+                            { answer: "Tam giác đều" },
+                            { answer: "Tam giác vuông", isCorrected: true },
+                            { answer: "Tam giác cân" },
+                            { answer: "Tam giác tù" }
+                        ]
+                    },
+                    {
+                        content: "Tổng của các góc trong một tam giác là bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "180 độ", isCorrected: true },
+                            { answer: "360 độ" },
+                            { answer: "270 độ" }
+                        ]
+                    },
+                    {
+                        content: "Số nào là số nguyên tố đầu tiên?",
+                        answers: [
+                            { answer: "0" },
+                            { answer: "1" },
+                            { answer: "2", isCorrected: true },
+                            { answer: "3" }
+                        ]
+                    },
+                    {
+                        content: "Công thức tính diện tích hình tròn là gì?",
+                        answers: [
+                            { answer: "π × bán kính", isCorrected: true },
+                            { answer: "π × bán kính × chu vi" },
+                            { answer: "π × chu vi" },
+                            { answer: "π × đường kính" }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 8,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Sinh học",
+                categoryId: "Sinh học",
+                emoji: "🧠",
+                playTime: 20,
+                playAmount: 28,
+                questions: [
+                    {
+                        content: "Nước có tên gọi khoa học là gì?",
+                        answers: [
+                            { answer: "H2O", isCorrected: true },
+                            { answer: "O2" },
+                            { answer: "H2" },
+                            { answer: "HO" }
+                        ]
+                    },
+                    {
+                        content: "Nước có tên gọi khoa học là gì?",
+                        answers: [
+                            { answer: "H2O", isCorrected: true },
+                            { answer: "O2" },
+                            { answer: "H2" },
+                            { answer: "HO" }
+                        ]
+                    },
+                    {
+                        content: "Nước có tên gọi khoa học là gì?",
+                        answers: [
+                            { answer: "H2O", isCorrected: true },
+                            { answer: "O2" },
+                            { answer: "H2" },
+                            { answer: "HO" }
+                        ]
+                    },
+                    {
+                        content: "Hành tinh nào được gọi là 'Hành tinh Đỏ'?",
+                        answers: [
+                            { answer: "Trái Đất" },
+                            { answer: "Sao Hỏa", isCorrected: true },
+                            { answer: "Sao Kim" },
+                            { answer: "Sao Thổ" }
+                        ]
+                    },
+                    {
+                        content: "Ánh sáng di chuyển nhanh nhất qua môi trường nào?",
+                        answers: [
+                            { answer: "Chất rắn" },
+                            { answer: "Chất lỏng" },
+                            { answer: "Chân không", isCorrected: true },
+                            { answer: "Khí quyển" }
+                        ]
+                    },
+                    {
+                        content: "Nguyên tố nào là cơ bản trong sự sống của con người?",
+                        answers: [
+                            { answer: "Carbon (C)", isCorrected: true },
+                            { answer: "Hydrogen (H)" },
+                            { answer: "Oxygen (O)" },
+                            { answer: "Nitrogen (N)" }
+                        ]
+                    },
+                    {
+                        content: "Đơn vị đo cường độ dòng điện là gì?",
+                        answers: [
+                            { answer: "Volt" },
+                            { answer: "Ohm" },
+                            { answer: "Watt" },
+                            { answer: "Ampe", isCorrected: true }
+                        ]
+                    },
+                    {
+                        content: "Cơ thể con người chứa bao nhiêu phần trăm nước?",
+                        answers: [
+                            { answer: "50%" },
+                            { answer: "60%", isCorrected: true },
+                            { answer: "70%" },
+                            { answer: "80%" }
+                        ]
+                    },
+                    {
+                        content: "Thành phần chính của mặt trời là gì?",
+                        answers: [
+                            { answer: "Helium và Hydrogen", isCorrected: true },
+                            { answer: "Carbon và Nitrogen" },
+                            { answer: "Oxygen và Helium" },
+                            { answer: "Hydrogen và Nitrogen" }
+                        ]
+                    },
+                    {
+                        content: "Loài động vật nào có thể tái tạo lại các phần cơ thể bị mất?",
+                        answers: [
+                            { answer: "Ếch" },
+                            { answer: "Kỳ nhông", isCorrected: true },
+                            { answer: "Chuột" },
+                            { answer: "Rắn" }
+                        ]
+                    },
+                    {
+                        content: "Lớp khí quyển nào chứa tầng ozone?",
+                        answers: [
+                            { answer: "Tầng đối lưu" },
+                            { answer: "Tầng bình lưu", isCorrected: true },
+                            { answer: "Tầng trung lưu" },
+                            { answer: "Tầng ngoài khí quyển" }
+                        ]
+                    },
+                    {
+                        content: "Ai là người phát hiện ra lực hấp dẫn?",
+                        answers: [
+                            { answer: "Albert Einstein" },
+                            { answer: "Isaac Newton", isCorrected: true },
+                            { answer: "Galileo Galilei" },
+                            { answer: "Niels Bohr" }
+                        ]
+                    }        
+                ]
+            },
+            {
+                id: 9,
+                image: "../assets/images/Image.png",
+                testName: "Quiz về Toán học",
+                categoryId: "Toán học",
+                emoji: "📚",
+                playTime: 20,
+                playAmount: 40,
+                questions: [
+                    {
+                        content: "Kết quả của phép toán 2 + 2 là bao nhiêu?",
+                        answers: [
+                            { answer: "3" },
+                            { answer: "4", isCorrected: true },
+                            { answer: "5" },
+                            { answer: "6" }
+                        ]
+                    },
+                    {
+                        content: "Số Pi (π) có giá trị xấp xỉ là bao nhiêu?",
+                        answers: [
+                            { answer: "3.14159", isCorrected: true },
+                            { answer: "3.14" },
+                            { answer: "3.0" },
+                            { answer: "4.0" }
+                        ]
+                    },
+                    {
+                        content: "Phương trình x² - 4 = 0 có nghiệm là gì?",
+                        answers: [
+                            { answer: "x = 2; x = -2", isCorrected: true },
+                            { answer: "x = 4; x = -4" },
+                            { answer: "x = 0; x = 4" },
+                            { answer: "x = 1; x = -1" }
+                        ]
+                    },
+                    {
+                        content: "Góc nhọn có giá trị bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "Dưới 90 độ", isCorrected: true },
+                            { answer: "Trên 90 độ" },
+                            { answer: "Bằng 180 độ" }
+                        ]
+                    },
+                    {
+                        content: "Định lý Pythagoras áp dụng cho tam giác nào?",
+                        answers: [
+                            { answer: "Tam giác đều" },
+                            { answer: "Tam giác vuông", isCorrected: true },
+                            { answer: "Tam giác cân" },
+                            { answer: "Tam giác tù" }
+                        ]
+                    },
+                    {
+                        content: "Tổng của các góc trong một tam giác là bao nhiêu độ?",
+                        answers: [
+                            { answer: "90 độ" },
+                            { answer: "180 độ", isCorrected: true },
+                            { answer: "360 độ" },
+                            { answer: "270 độ" }
+                        ]
+                    },
+                    {
+                        content: "Số nào là số nguyên tố đầu tiên?",
+                        answers: [
+                            { answer: "0" },
+                            { answer: "1" },
+                            { answer: "2", isCorrected: true },
+                            { answer: "3" }
+                        ]
+                    },
+                    {
+                        content: "Công thức tính diện tích hình tròn là gì?",
+                        answers: [
+                            { answer: "π × bán kính", isCorrected: true },
+                            { answer: "π × bán kính × chu vi" },
+                            { answer: "π × chu vi" },
+                            { answer: "π × đường kính" }
+                        ]
+                    }
+                ]
+            },
+
+        ];
+        saveToLocalStorage();
+    }
+}
+function getCategoriesFromTests(){
+    return [...new Map(
+        tests.map(test => [test.categoryId, { id: test.id, name: test.categoryId, emoji: test.emoji }])
+    ).values()];
+}
+function renderCategories(){
+    categoryTableBody.innerHTML = "";
+    let categories = getCategoriesFromTests();
+    let startIndex = (currentPage - 1) * itemsPerPage;
+    let endIndex = startIndex + itemsPerPage;
+    let visibleCategories = categories.slice(startIndex, endIndex);
+    visibleCategories.forEach(category => {
+        let row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${category.id}</td>
+            <td>${category.emoji} ${category.name}</td>
+            <td>
+                <button class="btn btn-warning btn-edit" data-id="${category.id}" 
+                    data-bs-toggle="modal" data-bs-target="#editCategoryModal">Sửa</button>
+                <button class="btn btn-danger btn-delete" data-id="${category.id}" 
+                    data-bs-toggle="modal" data-bs-target="#deleteModal">Xóa</button>
+            </td>
+        `;
+        categoryTableBody.appendChild(row);
+    });
+    document.querySelectorAll(".btn-edit").forEach(button =>{
+        button.addEventListener("click", () => {
+            currentCategoryId = parseInt(button.dataset.id);
+            let category = tests.find(test => test.id === currentCategoryId);
+            if(category){
+                document.getElementById("editCategoryName").value = category.categoryId;
+                document.getElementById("editCategoryEmoji").value = category.emoji;
+            }
+        });
+    });
+    document.querySelectorAll(".btn-delete").forEach(button =>{
+        button.addEventListener("click", () =>{
+            currentCategoryId = Number(button.dataset.id);
+        });
+    });
+    renderPagination();
+}
+function renderPagination(){
+    let paginationContainer = document.querySelector(".page-numbers");
+    let prevButton = document.querySelector(".page-prev");
+    let nextButton = document.querySelector(".page-next");
+    paginationContainer.innerHTML = "";
+    let categories = getCategoriesFromTests();
+    let totalPages = Math.ceil(categories.length / itemsPerPage);
+    for(let i = 1; i <= totalPages; i++){
+        let pageButton = document.createElement("button");
+        pageButton.textContent = i;
+        pageButton.className = "btn btn-link page-number";
+        if(i === currentPage){
+            pageButton.classList.add("active");
+        }
+        pageButton.addEventListener("click", () =>{
+            currentPage = i;
+            renderCategories();
+        });
+        paginationContainer.appendChild(pageButton);
+    }
+    if (currentPage === 1) {
+        prevButton.classList.add("disabled"); // Thêm lớp CSS disabled
+        prevButton.disabled = true;          // Đặt thuộc tính disabled
+    } else {
+        prevButton.classList.remove("disabled");
+        prevButton.disabled = false;
+    }
+
+    // Vô hiệu hóa nút "Next" nếu đang ở trang cuối cùng
+    if (currentPage === totalPages) {
+        nextButton.classList.add("disabled");
+        nextButton.disabled = true;
+    } else {
+        nextButton.classList.remove("disabled");
+        nextButton.disabled = false;
+    }
+
+    prevButton.disabled = currentPage === 1;
+    nextButton.disabled = currentPage === totalPages;
+    prevButton.addEventListener("click", handlePrevClick);
+    nextButton.addEventListener("click", handleNextClick);
+}
+function handlePrevClick(){
+    if(currentPage > 1){
+        currentPage--;
+        renderCategories();
+    }
+}
+function handleNextClick(){
+    let categories = getCategoriesFromTests();
+    let totalPages = Math.ceil(categories.length / itemsPerPage);
+    if(currentPage < totalPages){
+        currentPage++;
+        renderCategories();
+    }
+}
+addCategoryForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // Ngăn reload trang
+    resetErrors();
+
+    const name = document.getElementById("categoryName").value;
+    const emoji = document.getElementById("categoryEmoji").value;
+    let isValid = true;
+
+    // Kiểm tra tính hợp lệ
+    if (!name || name.length < 4) {
+        showError('categoryName', 'Tên phải từ 4 ký tự trở lên');
+        isValid = false;
+    }
+    if (!emoji) {
+        showError('categoryEmoji', 'Vui lòng chọn emoji');
+        isValid = false;
+    }
+    if (tests.some(test => test.categoryId === name)) {
+        showError('categoryName', 'Tên danh mục đã tồn tại');
+        isValid = false;
+    }
+    if (!isValid) return;
+
+    // Tạo ID tự động (số lớn nhất + 1)
+    const newId = tests.length > 0 ? Math.max(...tests.map(test => test.id)) + 1 : 1;
+
+    // Thêm danh mục mới
+    tests.push({ id: newId, categoryId: name, emoji: emoji });
+
+    // Lưu vào localStorage và làm mới giao diện
+    saveToLocalStorage();
+    renderCategories();
+    bootstrap.Modal.getInstance(document.getElementById("addCategoryModal")).hide();
+    addCategoryForm.reset();
+});
+editCategoryForm.addEventListener("submit", (event) => {
+    event.preventDefault(); // Ngăn reload trang
+    resetErrors();
+
+    const name = document.getElementById("editCategoryName").value;
+    const emoji = document.getElementById("editCategoryEmoji").value;
+    let isValid = true;
+
+    // Kiểm tra tính hợp lệ
+    if (!name || name.length < 4) {
+        showError('editCategoryName', 'Tên phải từ 4 ký tự trở lên');
+        isValid = false;
+    }
+    if (tests.some(test => test.categoryId === name && test.id !== currentCategoryId)) {
+        showError('editCategoryName', 'Tên danh mục đã tồn tại');
+        isValid = false;
+    }
+    if (!emoji) {
+        showError('editCategoryEmoji', 'Vui lòng chọn emoji');
+        isValid = false;
+    }
+    if (!isValid) return;
+
+    // Sửa danh mục
+    tests.forEach(test => {
+        if (test.id === currentCategoryId) {
+            test.categoryId = name;
+            test.emoji = emoji;
+        }
+    });
+
+    // Lưu vào localStorage và làm mới giao diện
+    saveToLocalStorage();
+    renderCategories();
+    bootstrap.Modal.getInstance(document.getElementById("editCategoryModal")).hide();
+});
+deleteConfirmButton.addEventListener("click", () => {
+    // Lọc bỏ phần tử có ID hiện tại
+    tests = tests.filter(test => test.id !== currentCategoryId);
+
+    // Lưu vào localStorage và làm mới giao diện
+    saveToLocalStorage();
+    renderCategories();
+    bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
+});
+function resetErrors(){
+    document.querySelectorAll(".is-invalid").forEach(input => input.classList.remove("is-invalid"));
+    document.querySelectorAll(".invalid-feedback").forEach(error =>{
+        error.textContent = "";
+        error.style.opacity = "0";
+        error.style.height = "0";
+    });
+}
+function showError(inputId, message){
+    let input = document.getElementById(inputId);
+    let errorElement = document.getElementById(`${inputId}Error`);
+    input.classList.add("is-invalid");
+    if(errorElement){
+        errorElement.textContent = message;
+        errorElement.style.opacity = "1";
+        errorElement.style.height = "auto";
+    }
+}
+window.addEventListener("load", () => {
+    loadFromLocalStorage();
+    renderCategories();
+});
